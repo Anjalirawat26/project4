@@ -1,25 +1,28 @@
 // body toggle class
-$(".sidebar-btn").click(function () {
+$(".mobile-trigger").click(function () {
     $("body").toggleClass("mobile-open");
 });
 
-  $(".sidebar-btn").click(function(){
-    $(".menu_sec").slideToggle("slow");
-  });
-
-
-// $(".has-submenu").click(function () {
-//   $(this).toggleClass("child-open");
-//   $(this).children(".submenu").slideToggle();
-// });
+$(".has-submenu").click(function () {
+  $(this).toggleClass("child-open");
+  $(this).children(".submenu").slideToggle();
+});
 
 // header fixed
-// $(window).scroll((function () {
-//     $(window).scrollTop() >= 50 ? $("header").addClass("fixed-header") : $("header").removeClass("fixed-header")
-// }
-// ));
+$(window).scroll((function () {
+    $(window).scrollTop() >= 50 ? $("header").addClass("fixed-header") : $("header").removeClass("fixed-header")
+}
+));
 
-
+// read more button
+$(".moreless-button").click(function () {
+    $(".moretext").slideToggle(10);
+    if ($(".moreless-button").text() == "Read more") {
+        $(this).text("Read less");
+    } else {
+        $(this).text("Read more");
+    }
+});
 
 // popup js
 $('.without-caption').magnificPopup({
@@ -52,48 +55,78 @@ $('.with-caption').magnificPopup({
   }
 });
 
-// popup 
-    $(document).ready(() => {
-      setTimeout(() => {
-        $('#exampleModal1').modal('show');
-      },  7000);
-    })
 
+// floor plan tab js
+if ($(".tabs-box").length) {
+  $(".tabs-box .tab-buttons .tab-btn").on("click", function (e) {
+    e.preventDefault();
+    var target = $($(this).attr("data-tab"));
 
-// read more button
-    $(".moreless-button").click(function () {
-      $(".moretext").slideToggle(10);
-      if ($(".moreless-button").text() == "Read more") {
-          $(this).text("Read less");
-      } else {
-          $(this).text("Read more");
-      }
+    if ($(target).is(":visible")) {
+      return false;
+    } else {
+      target
+        .parents(".tabs-box")
+        .find(".tab-buttons")
+        .find(".tab-btn")
+        .removeClass("active-btn");
+      $(this).addClass("active-btn");
+      target
+        .parents(".tabs-box")
+        .find(".tabs-content")
+        .find(".tab")
+        .fadeOut(0);
+      target
+        .parents(".tabs-box")
+        .find(".tabs-content")
+        .find(".tab")
+        .removeClass("active-tab");
+      $(target).fadeIn(300);
+      $(target).addClass("active-tab");
+    }
   });
+}
 
 
 $(document).ready(function () {
-  $('.nav-link').on('click', function (e) {
-      var target = this.hash;
-      var $target = $(target);
-      var targetOffset = $target.offset().top - 50;
-      $('html, body').stop().animate({
-          scrollTop: targetOffset
-      }, 1500, 'swing', function () {
-          window.location.hash = target;
-      });
+  if (window.matchMedia("(min-width: 769px)").matches) {
+    $('.banner-form .close_outer').on('click', function () {
+      $(this).closest('.banner-form').addClass('bottom');
+      $(".lower-form-part").slideUp(500);
+    })
+
+    setTimeout(function () {
+      $('.banner-form').addClass('active');
+    }, 3000)
+  }
+
+})
+
+
+// FORM SLIDE UP & DOWN
+
+$(document).ready(function () {
+  $(window).scroll(function () {
+
+    if (window.matchMedia("(min-width: 769px)").matches) {
+      if ($(window).width() > 768 && $(this).scrollTop() > 200) {
+        $(".lower-form-part").slideUp(500);
+        $('.banner-form').addClass('bottom');
+      }
+      else {
+        $(".lower-form-part").slideDown(500);
+        $('.banner-form').removeClass('bottom');
+      }
+    }
+
+  });
+
+  $(".form-top").click(function () {
+    if (window.matchMedia("(min-width: 769px)").matches) {
+      $(".lower-form-part").slideToggle();
+    }
   });
 });
 
-$(".counter-number").counterUp({
-  delay: 10,
-  time: 1000,
-});
 
 
-// const text = document.querySelector(".about-experience-tag");
-// text.innerHTML = text.innerText
-//     .split("")
-//     .map(
-//         (char, i) => `<span style="transform:rotate(${i * 10.3}deg)">${char}</span>`
-//     )
-//     .join("");
